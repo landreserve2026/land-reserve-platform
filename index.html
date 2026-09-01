@@ -1,1 +1,943 @@
-<html><body>Test</body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>运用专项债券实施土地收储全链条价值测算平台</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- PDF.js 用于渲染政策原文PDF -->
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+    <!-- html2canvas + jsPDF 用于报告导出 -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-icon">🏛️</span>
+                <div class="logo-text">
+                    <span class="logo-main">土地收储全链条价值测算平台</span>
+                    <span class="logo-sub">Special Bond · Land Reserve · Value Assessment</span>
+                </div>
+            </div>
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="切换导航">☰</button>
+        </div>
+    </header>
+
+    <!-- 主横幅 -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">运用专项债券实施土地收储全链条价值测算</h1>
+            <p class="hero-subtitle">Full-Chain Value Calculation Platform for Land Reserve with Special Bonds</p>
+            <p class="hero-desc">依托 AR / ARIMA / SARIMA / ECM 预测模型，构建从土地市场价格评估、出让收入预测、收储成本测算到融资平衡可实施性分析的全链条价值测算闭环</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-num">6</span>
+                    <span class="stat-label">核心板块</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num">4</span>
+                    <span class="stat-label">预测模型</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num">8</span>
+                    <span class="stat-label">影响因子</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num">60</span>
+                    <span class="stat-label">预测月数</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="layout-wrapper">
+        <!-- 左侧导航栏 -->
+        <aside class="sidebar" id="sidebar">
+            <nav class="sidebar-nav">
+                <a href="#section1" class="nav-item" data-section="section1">
+                    <span class="nav-icon">📚</span>
+                    <span class="nav-text">基础资料库</span>
+                    <span class="nav-subtoggle">▼</span>
+                    <div class="nav-submenu">
+                        <a href="#policy-docs" class="nav-subitem" data-target="policy-docs">政策资料库</a>
+                        <a href="#work-procedures" class="nav-subitem" data-target="work-procedures">工作程序</a>
+                        <a href="#price-rules" class="nav-subitem" data-target="price-rules">收储价格确定程序</a>
+                    </div>
+                </a>
+                <a href="#section2" class="nav-item" data-section="section2">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">土地市场价格评估</span>
+                    <span class="nav-subtoggle">▼</span>
+                    <div class="nav-submenu">
+                        <a href="#connotation" class="nav-subitem" data-target="connotation">评估内涵</a>
+                        <a href="#purpose" class="nav-subitem" data-target="purpose">评估目的</a>
+                        <a href="#principles" class="nav-subitem" data-target="principles">评估原则</a>
+                        <a href="#price-eval-results" class="nav-subitem" data-target="price-eval-results">价格评估结果</a>
+                    </div>
+                </a>
+                <a href="#section3" class="nav-item" data-section="section3">
+                    <span class="nav-icon">🔮</span>
+                    <span class="nav-text">预计土地出让收入测算</span>
+                    <span class="nav-subtoggle">▼</span>
+                    <div class="nav-submenu">
+                        <a href="#income-standard" class="nav-subitem" data-target="income-standard">预计土地出让收入测算标准</a>
+                        <a href="#model-forecasts" class="nav-subitem" data-target="model-forecasts">市场预测模型和结果</a>
+                        <a href="#income-forecast-results" class="nav-subitem" data-target="income-forecast-results">不同收储年限测算结果</a>
+                    </div>
+                </a>
+                <a href="#section4" class="nav-item" data-section="section4">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">最低下调幅度与收地价格</span>
+                </a>
+                <a href="#section5" class="nav-item" data-section="section5">
+                    <span class="nav-icon">⚖️</span>
+                    <span class="nav-text">融资平衡可实施性分析</span>
+                    <span class="nav-subtoggle">▼</span>
+                    <div class="nav-submenu">
+                        <a href="#coverage-calc" class="nav-subitem" data-target="coverage-calc">覆盖倍数测算</a>
+                        <a href="#sensitivity-analysis" class="nav-subitem" data-target="sensitivity-analysis">敏感性分析</a>
+                    </div>
+                </a>
+                <a href="#section6" class="nav-item" data-section="section6">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">投资结论</span>
+                    <span class="nav-subtoggle">▼</span>
+                    <div class="nav-submenu">
+                        <a href="#conclusionTable" class="nav-subitem" data-target="conclusionTable">不同年限收入成本对比</a>
+                        <a href="#recommendationBox" class="nav-subitem" data-target="recommendationBox">综合建议</a>
+                    </div>
+                </a>
+                <a href="#section7" class="nav-item" data-section="section7">
+                    <span class="nav-icon">📄</span>
+                    <span class="nav-text">全链条价格测算结果报告</span>
+                    <span class="nav-subtoggle">▼</span>
+                    <div class="nav-submenu">
+                        <a href="#report-intro" class="nav-subitem" data-target="report-intro">一、项目介绍</a>
+                        <a href="#report-eval" class="nav-subitem" data-target="report-eval">二、土地市场价格评估</a>
+                        <a href="#report-price" class="nav-subitem" data-target="report-price">三、建议下调幅度和收地价格测算</a>
+                        <a href="#report-feasibility" class="nav-subitem" data-target="report-feasibility">四、可实施性分析</a>
+                        <a href="#report-investment" class="nav-subitem" data-target="report-investment">五、投资建议</a>
+                    </div>
+                </a>
+            </nav>
+        </aside>
+
+    <main class="main-content">
+        <!-- ============ 板块一：测算资料库 ============ -->
+        <section id="section1" class="section section-alt">
+            <div class="section-header">
+                <span class="section-tag">板块一</span>
+                <h2 class="section-title">基础资料库</h2>
+                <p class="section-desc">汇总土地收储专项债券相关政策文件与全周期价值测算工作程序，为项目实施提供政策依据与作业规范</p>
+            </div>
+
+            <!-- 政策资料库 -->
+            <div class="subsection" id="policy-docs">
+                <h3 class="subsection-title"><span class="sub-icon">📜</span>政策资料库</h3>
+                <p class="subsection-desc">土地储备专项债券相关政策文件，按发布部门分类</p>
+                <div class="filter-bar" id="policyFilter">
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-department="all">全部部门</button>
+                        <button class="filter-btn" data-department="shenzhen">深圳市规自局</button>
+                        <button class="filter-btn" data-department="land-resources">国土资源部</button>
+                        <button class="filter-btn" data-department="natural-resources">自然资源部</button>
+                        <button class="filter-btn" data-department="state-council">国务院办公厅</button>
+                        <button class="filter-btn" data-department="finance">财政部</button>
+                        <button class="filter-btn" data-department="standardization">国家标准化管理委员会</button>
+                    </div>
+                    <input type="text" class="search-input" id="policySearch" placeholder="搜索政策名称、文号或关键词...">
+                </div>
+                <div class="policy-stats" id="policyStats"></div>
+                <div class="doc-list" id="policyContent"></div>
+            </div>
+
+            <!-- 工作程序 -->
+            <div class="subsection" id="work-procedures">
+                <h3 class="subsection-title"><span class="sub-icon">🔄</span>工作程序</h3>
+                <p class="subsection-desc">依据《土地收储项目全周期价值测算工作手册》第二章工作程序，遵循"需求提出→开展测算→三级审核→成果报送"闭环业务逻辑，全面覆盖宗地土地市场价格预评估、原规划用途分周期出让收入测算、调整后规划用途分周期出让收入测算及项目融资平衡、可实施性研判全链条业务</p>
+                <div class="procedure-flow" id="procedureFlow"></div>
+            </div>
+
+            <!-- 价格确定规则程序 -->
+            <div class="subsection" id="price-rules">
+                <h3 class="subsection-title"><span class="sub-icon">💰</span>收储价格确定程序</h3>
+                <p class="subsection-desc">依据《自然资源部关于运用地方政府专项债券资金收回收购存量闲置土地的通知》（自然资发〔2024〕242号）第五条及《深圳市运用专项债券收回收购存量闲置土地价格确定规则》（深规划资源〔2026〕48号），价格确定遵循"评估→就低定价→集体决策→协商公示→政府批准"五步流程</p>
+                <div id="priceProcedureFlow"></div>
+            </div>
+        </section>
+
+        <!-- ============ 板块二：土地市场价格评估 ============ -->
+        <section id="section2" class="section">
+            <div class="section-header">
+                <span class="section-tag">板块二</span>
+                <h2 class="section-title">土地市场价格评估</h2>
+                <p class="section-desc">阐释收储场景下土地价格评估的内涵、目的与遵循原则，给出评估结果并形成全链条测算的价格基准</p>
+            </div>
+
+            <!-- 评估内涵 -->
+            <div class="subsection" id="connotation">
+                <h3 class="subsection-title"><span class="sub-icon">📖</span>评估内涵</h3>
+                <div class="card-grid" id="connotationGrid"></div>
+            </div>
+
+            <!-- 评估目的 -->
+            <div class="subsection" id="purpose">
+                <h3 class="subsection-title"><span class="sub-icon">🎯</span>评估目的</h3>
+                <div class="card-grid" id="purposeGrid"></div>
+            </div>
+
+            <!-- 评估遵循的原则 -->
+            <div class="subsection" id="principles">
+                <h3 class="subsection-title"><span class="sub-icon">⚖️</span>评估遵循的原则</h3>
+                <div class="principle-grid" id="principlesGrid"></div>
+            </div>
+
+            <!-- 土地市场价格评估 -->
+            <div class="subsection" id="price-eval-results">
+                <h3 class="subsection-title"><span class="sub-icon">🧾</span>土地市场价格评估</h3>
+                <p class="subsection-desc">填报评估项目规划指标与各评估口径总价（手工填报），自动测算综合楼面地价、综合地面地价及剩余年期地价变动率，作为后续预期土地出让收入测算、收地价格与融资平衡分析的价格基准</p>
+                <h4 class="block-title"><span class="sub-icon">📐</span>评估项目规划指标</h4>
+                <div class="param-row">
+                    <div class="input-group">
+                        <label>总用地面积（㎡）</label>
+                        <input type="number" id="pe_area" value="50000" min="1" step="100">
+                    </div>
+                    <div class="input-group">
+                        <label>总建筑面积（㎡）</label>
+                        <input type="number" id="pe_buildArea" value="125000" min="1" step="100">
+                    </div>
+                    <div class="input-group">
+                        <label>计算容积率</label>
+                        <input type="text" id="pe_far" value="2.50" readonly>
+                        <span class="input-hint">= 总建筑面积 ÷ 总用地面积，自动计算</span>
+                    </div>
+                </div>
+                <h4 class="block-title" style="margin-top:16px;"><span class="sub-icon">🏗️</span>意向新规划指标（规划后用途）</h4>
+                <div class="param-row">
+                    <div class="input-group">
+                        <label>总用地面积（㎡）</label>
+                        <input type="number" id="pe_areaNew" value="50000" min="1" step="100">
+                    </div>
+                    <div class="input-group">
+                        <label>意向规划后总建筑面积（㎡）</label>
+                        <input type="number" id="pe_buildAreaNew" value="162500" min="1" step="100">
+                        <span class="input-hint">= 原总建筑面积 × 价值系数1.30</span>
+                    </div>
+                    <div class="input-group">
+                        <label>计算容积率</label>
+                        <input type="text" id="pe_farNew" value="3.25" readonly>
+                        <span class="input-hint">= 新总建筑面积 ÷ 总用地面积，自动计算</span>
+                    </div>
+                </div>
+                <h4 class="block-title" style="margin-top:20px;"><span class="sub-icon">🧾</span>土地市场价格评估初步结果</h4>
+                <p class="subsection-desc" style="margin-bottom:12px;">总价手工填报；综合楼面地价 = 总价 ÷ 总建筑面积；综合地面地价 = 总价 ÷ 总用地面积</p>
+                <div class="table-wrap">
+                    <table class="data-table result-table" id="priceEvalTable">
+                        <thead>
+                            <tr>
+                                <th style="width:34%;">评估项目</th>
+                                <th>总价(万元)</th>
+                                <th>综合楼面地价(元/㎡)</th>
+                                <th>综合地面地价(元/㎡)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>① 最新版本标定地价评估结果（满年期）</td>
+                                <td><input type="number" id="pe_totalFull" value="187500" min="0" step="100" class="cell-input"></td>
+                                <td class="num" id="pe_floorFull">—</td>
+                                <td class="num" id="pe_groundFull">—</td>
+                            </tr>
+                            <tr>
+                                <td>② 最新版本标定地价评估结果（剩余年期）</td>
+                                <td><input type="number" id="pe_totalRemain" value="182500" min="0" step="100" class="cell-input"></td>
+                                <td class="num" id="pe_floorRemain">—</td>
+                                <td class="num" id="pe_groundRemain">—</td>
+                            </tr>
+                            <tr>
+                                <td>③ 当前时点评估结果（剩余年期）</td>
+                                <td><input type="number" id="pe_totalCurrent" value="155125" min="0" step="100" class="cell-input"></td>
+                                <td class="num" id="pe_floorCurrent">—</td>
+                                <td class="num" id="pe_groundCurrent">—</td>
+                            </tr>
+                            <tr style="background:#f3f6fb;">
+                                <td><strong>④ 最新版本标定地价评估结果（满年期 · 意向新规划）</strong></td>
+                                <td><input type="number" id="pe_totalFullNew" value="243750" min="0" step="100" class="cell-input"></td>
+                                <td class="num" id="pe_floorFullNew">—</td>
+                                <td class="num" id="pe_groundFullNew">—</td>
+                            </tr>
+                            <tr>
+                                <td><strong>变动：剩余年期地价变动率 =（③ − ②）÷ ②</strong></td>
+                                <td class="num" colspan="3" id="pe_changeRate">—</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="result-summary" id="priceEvalSummary"></div>
+            </div>
+        </section>
+
+        <!-- ============ 板块三：预计土地出让收入测算 ============ -->
+        <section id="section3" class="section section-alt">
+            <div class="section-header">
+                <span class="section-tag">板块三</span>
+                <h2 class="section-title">预计土地出让收入测算</h2>
+                <p class="section-desc">基于二手住房定基指数预测模型，测算不同收储年期下的住宅市场预测土地出让收入（当前以住宅市场预测为主）</p>
+            </div>
+
+            <!-- 预计土地出让收入测算标准 -->
+            <div class="subsection" id="income-standard">
+                <h3 class="subsection-title"><span class="sub-icon">📐</span>预计土地出让收入测算标准</h3>
+                <p class="subsection-desc">依据《土地收储项目全周期价值测算工作手册》第三章，预计土地出让收入按以下标准测算</p>
+                <div class="card-grid">
+                    <div class="info-card">
+                        <h4><span>📐</span>3.1 通用测算公式</h4>
+                        <p>预计土地出让收入（P<sub>expected</sub>）= 当前土地市场价格（P<sub>current</sub>）× 市场形势研判修正系数（β）</p>
+                        <p style="margin-top:8px;">根据市场景气度分为<strong>市场下行、市场企稳、市场上行</strong>三类差异化测算情形。</p>
+                    </div>
+                    <div class="info-card">
+                        <h4><span>📉</span>情形一：市场下行</h4>
+                        <p>市场需求偏弱、地价同比走弱，修正系数β定义为<strong>土地价值折减系数</strong>，通过折价幅度扣减当期地价得到预期价值。</p>
+                        <p style="margin-top:8px;">P<sub>expected</sub> = P<sub>current</sub> × β = P<sub>current</sub> ×（1 − R<sub>ate_discount</sub>）</p>
+                        <p style="margin-top:6px;font-size:13px;color:var(--text-muted);">价值折减系数采用逐年累乘方式测算3年、5年、7年、10年多周期宗地价值。第1年折减系数为当前土地市场价格同比降幅，后续年份按降幅收窄原则确定。</p>
+                    </div>
+                    <div class="info-card">
+                        <h4><span>➖</span>情形二：市场企稳</h4>
+                        <p>市场平稳阶段土地供需均衡，地价无明显涨跌预期，市场形势研判修正系数β<strong>恒定取值1.0</strong>，当期土地市场价格直接等于预期土地出让价值。</p>
+                        <p style="margin-top:8px;font-size:13px;color:var(--text-muted);">对于多周期收储宗地，各年度修正系数均为1.0，全周期无需对当期地价做收益修正。若市场景气度发生切换，则自周期转变当年起启用下行折减或上行溢价测算规则。</p>
+                    </div>
+                    <div class="info-card">
+                        <h4><span>📈</span>情形三：市场上行</h4>
+                        <p>人口、产业与住房需求持续扩张，地价具备稳定上涨预期，修正系数β定义为<strong>土地价值溢价系数</strong>。</p>
+                        <p style="margin-top:8px;">P<sub>expected</sub> = P<sub>current</sub> × β = P<sub>current</sub> ×（1 + R<sub>ate_discount</sub>）</p>
+                        <p style="margin-top:6px;font-size:13px;color:var(--text-muted);">多周期宗地同样采用逐年累乘测算总溢价系数，首年溢价幅度参考当期地价同比上涨水平，后续年度按热度放缓、增幅收窄原则下调。</p>
+                    </div>
+                    <div class="info-card">
+                        <h4><span>🔍</span>3.3 市场企稳周期判定标准</h4>
+                        <p>以宗地同比变动幅度作为基准判定依据，结合区域基本面、物业库存去化周期等可获取指标综合修正，研判住宅、商办、工业物业市场企稳修复周期。</p>
+                        <p style="margin-top:8px;font-size:13px;color:var(--text-muted);">判定流程采用"基准周期分层定底、区域供需因子动态修正"两步法。先依据宗地土地市场价格同比降幅划定基础企稳修复周期，再结合区域基本面、库存去化周期综合修正。</p>
+                    </div>
+                    <div class="info-card">
+                        <h4><span>📊</span>常规长期走势判断</h4>
+                        <p><strong>住宅市场：</strong>V型走势（核心区域）、U型走势（非核心区域）</p>
+                        <p style="margin-top:4px;"><strong>商办市场：</strong>L型走势（商办存量高、空置压力大）、V型走势（核心CBD）</p>
+                        <p style="margin-top:4px;"><strong>工业市场：</strong>U型（常规成熟园区）、V型（高新科创园区）、L型（传统落后片区）</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 市场预测 Tabs -->
+            <div class="market-tabs">
+                <button class="market-tab active" data-market="residential">住宅市场预测</button>
+                <button class="market-tab" data-market="commercial">商办市场预测</button>
+                <button class="market-tab" data-market="industrial">工业市场预测</button>
+            </div>
+
+            <div id="residentialPanel" class="market-panel active">
+                <!-- 市场预测模型和结果 -->
+                <div class="subsection" id="model-forecasts">
+                    <h3 class="subsection-title"><span class="sub-icon">📈</span>市场预测模型和结果</h3>
+                    <p class="subsection-desc">基于二手住房定基指数（second_house_rate），运用 AR / ARIMA / SARIMA / ECM 四类预测模型，结合收益、成本、宏观、需求四大类影响因子，预测 2026-12 ~ 2030-12 各年末土地市场价格走势</p>
+
+                    <h4 class="block-title"><span class="sub-icon">📊</span>影响因素展示图</h4>
+                    <div class="chart-container">
+                        <canvas id="factorLineChart"></canvas>
+                    </div>
+                    <div class="chart-container chart-sm">
+                        <canvas id="factorBarChart"></canvas>
+                    </div>
+
+                    <h4 class="block-title" style="margin-top:24px;"><span class="sub-icon">📋</span>影响变量与追踪变量</h4>
+                    <div class="table-wrap">
+                        <table class="data-table" id="factorsTable">
+                            <thead>
+                                <tr>
+                                    <th>影响因素</th>
+                                    <th>追踪变量</th>
+                                    <th>变量含义</th>
+                                    <th>类型</th>
+                                    <th>数据来源</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <h4 class="block-title" style="margin-top:20px;"><span class="sub-icon">🔬</span>预测模型对比（AR / ARIMA / SARIMA / ECM）</h4>
+                    <div class="table-wrap">
+                        <table class="data-table" id="metricsTable">
+                            <thead>
+                                <tr>
+                                    <th>模型</th>
+                                    <th>建模范式</th>
+                                    <th>样本内RMSE</th>
+                                    <th>样本外RMSE</th>
+                                    <th>样本外MAE</th>
+                                    <th>R²</th>
+                                    <th>说明</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <h4 class="block-title" style="margin-top:24px;"><span class="sub-icon">📈</span>各模型年末预测结果</h4>
+                    <p class="subsection-desc" style="margin-bottom:12px;">展示 2026-12、2027-12、2028-12、2029-12、2030-12 五个年末时点，不同预测模型的预测值对比</p>
+                    <div class="chart-container">
+                        <canvas id="yearlyForecastChart"></canvas>
+                    </div>
+                    <div class="table-wrap" style="margin-top:20px;">
+                        <table class="data-table" id="yearlyTable">
+                            <thead>
+                                <tr>
+                                    <th>预测时点</th>
+                                    <th>AR(10)</th>
+                                    <th>ARIMA(3,1,5)</th>
+                                    <th>SARIMA</th>
+                                    <th>ECM(FM-OLS)</th>
+                                    <th>Naive基准</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <h4 class="block-title" style="margin-top:24px;"><span class="sub-icon">📉</span>second_house_rate 完整预测趋势（2026-01 ~ 2030-12，60个月）</h4>
+                    <div class="chart-container">
+                        <canvas id="forecastChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 不同收储年限预计土地出让收入测算结果 -->
+                <div class="subsection" id="income-forecast-results">
+                    <h3 class="subsection-title"><span class="sub-icon">🧮</span>不同收储年限预计土地出让收入测算结果</h3>
+                    <p class="subsection-desc">以最新版已发布标定地价满年期评估总价为基准，结合手工填报的年度市场形势修正系数（连乘累计），测算不同收储年限（1/2/3/5/7年）的预计土地出让价格、综合楼面地价与预期土地出让收入</p>
+
+                    <h4 class="block-title"><span class="sub-icon">🗂️</span>不同收储年限市场形势修正系数</h4>
+                    <p class="subsection-desc" style="margin-bottom:12px;">年度修正系数手工填报（默认按剩余年期地价变动率及年度收窄规律自动生成，可修订），各收储年限市场形势修正系数 = 第1年至该年度年度修正系数的连乘积</p>
+                    <div class="table-wrap">
+                        <table class="data-table result-table" id="coefTable">
+                            <thead>
+                                <tr>
+                                    <th style="width:16%;">年度</th>
+                                    <th>年度修正系数（手工填报）</th>
+                                    <th>累计市场形势修正系数</th>
+                                    <th style="width:22%;">收储测算年限</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="highlight">第1年</td>
+                                    <td><input type="number" id="mc_year_1" value="0.8500" min="0.01" step="0.0001" class="cell-input"></td>
+                                    <td class="num" id="mc_cum_1">—</td>
+                                    <td class="highlight">1年期</td>
+                                </tr>
+                                <tr>
+                                    <td class="highlight">第2年</td>
+                                    <td><input type="number" id="mc_year_2" value="0.9000" min="0.01" step="0.0001" class="cell-input"></td>
+                                    <td class="num" id="mc_cum_2">—</td>
+                                    <td class="highlight">2年期</td>
+                                </tr>
+                                <tr>
+                                    <td class="highlight">第3年</td>
+                                    <td><input type="number" id="mc_year_3" value="0.9500" min="0.01" step="0.0001" class="cell-input"></td>
+                                    <td class="num" id="mc_cum_3">—</td>
+                                    <td class="highlight">3年期</td>
+                                </tr>
+                                <tr>
+                                    <td>第4年</td>
+                                    <td><input type="number" id="mc_year_4" value="0.9700" min="0.01" step="0.0001" class="cell-input"></td>
+                                    <td class="num" id="mc_cum_4">—</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td class="highlight">第5年</td>
+                                    <td><input type="number" id="mc_year_5" value="0.9900" min="0.01" step="0.0001" class="cell-input"></td>
+                                    <td class="num" id="mc_cum_5">—</td>
+                                    <td class="highlight">5年期</td>
+                                </tr>
+                                <tr>
+                                    <td>第6年</td>
+                                    <td><input type="number" id="mc_year_6" value="1.0000" min="0.01" step="0.0001" class="cell-input"></td>
+                                    <td class="num" id="mc_cum_6">—</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td class="highlight">第7年</td>
+                                    <td><input type="number" id="mc_year_7" value="1.0000" min="0.01" step="0.0001" class="cell-input"></td>
+                                    <td class="num" id="mc_cum_7">—</td>
+                                    <td class="highlight">7年期</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="chart-container chart-sm">
+                        <canvas id="coefBarChart"></canvas>
+                    </div>
+
+                    <h4 class="block-title" style="margin-top:24px;"><span class="sub-icon">💵</span>原规划指标 · 预计土地出让收入测算</h4>
+                    <div class="table-wrap">
+                        <table class="data-table result-table" id="incomeForecastTable">
+                            <thead>
+                                <tr>
+                                    <th>收储年限</th>
+                                    <th>原规划满年期评估总价(万元)</th>
+                                    <th>市场形势修正系数</th>
+                                    <th>预计土地出让价格(万元)</th>
+                                    <th>综合楼面地价(元/㎡)</th>
+                                    <th>预期土地出让收入(万元)</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="chart-container chart-sm">
+                        <canvas id="incomeForecastChart"></canvas>
+                    </div>
+                    <div class="result-summary" id="incomeForecastSummary"></div>
+
+                    <h4 class="block-title" style="margin-top:24px;"><span class="sub-icon">🏗️</span>意向新规划指标 · 预计土地出让收入测算</h4>
+                    <p class="subsection-desc" style="margin-bottom:12px;">以板块二④意向新规划满年期评估总价为基准，复用同一组市场形势修正系数，测算不同收储年限新规划指标下的预计土地出让收入，作为后续板块五融资平衡可实施性分析的收入基准</p>
+                    <div class="table-wrap">
+                        <table class="data-table result-table" id="incomeForecastNewTable">
+                            <thead>
+                                <tr>
+                                    <th>收储年限</th>
+                                    <th>新规划满年期评估总价(万元)</th>
+                                    <th>市场形势修正系数</th>
+                                    <th>预计土地出让价格(万元)</th>
+                                    <th>综合楼面地价(元/㎡)</th>
+                                    <th>预期土地出让收入(万元)</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="chart-container chart-sm">
+                        <canvas id="incomeForecastNewChart"></canvas>
+                    </div>
+                    <div class="result-summary" id="incomeForecastNewSummary"></div>
+                </div>
+            </div>
+
+            <div id="commercialPanel" class="market-panel">
+                <div class="placeholder-panel">
+                    <span class="placeholder-icon">🏢</span>
+                    <h3>商办市场预测</h3>
+                    <p>商办市场预测模型正在构建中。当前预测以住宅市场预测为主，后续将接入商办用地价格指数及对应影响因子。</p>
+                    <p class="placeholder-note">参考住宅市场预测框架，商办市场将采用租金、空置率、商办用地出让价格等追踪变量。</p>
+                </div>
+            </div>
+
+            <div id="industrialPanel" class="market-panel">
+                <div class="placeholder-panel">
+                    <span class="placeholder-icon">🏭</span>
+                    <h3>工业市场预测</h3>
+                    <p>工业市场预测模型正在构建中。当前预测以住宅市场预测为主，后续将接入工业用地价格指数及对应影响因子。</p>
+                    <p class="placeholder-note">参考住宅市场预测框架，工业市场将采用工业增加值、用地出让价格、产业政策等追踪变量。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 板块四：测算最低下调幅度和最终收地价格 ============ -->
+        <section id="section4" class="section">
+            <div class="section-header">
+                <span class="section-tag">板块四</span>
+                <h2 class="section-title">测算最低下调幅度和最终收地价格</h2>
+                <p class="section-desc">按照土地收储年期，测算原规划用途不同收储年份的收储成本与预测土地出让收入，得出融资平衡收地价格与最低下调幅度</p>
+            </div>
+
+            <div class="calc-layout">
+                <!-- 左侧：参数输入 -->
+                <div class="calc-inputs">
+                    <h3 class="calc-title"><span class="sub-icon">⚙️</span>收储测算参数</h3>
+                    <div class="input-group">
+                        <label>原规划用途</label>
+                        <select id="s3_use">
+                            <option value="residential">住宅用地</option>
+                            <option value="commercial">商办用地</option>
+                            <option value="industrial">工业用地</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>最新版标定地价满年期评估总价（万元）</label>
+                        <input type="text" id="s3_fullTotal" readonly>
+                        <span class="input-hint">自动联动板块二①满年期评估结果</span>
+                    </div>
+                    <div class="input-group">
+                        <label>当前时点剩余年期评估总价（万元）</label>
+                        <input type="text" id="s3_baseTotal" readonly>
+                        <span class="input-hint">= 收地基础价格，自动联动板块二③</span>
+                    </div>
+                    <div class="input-divider">收储成本参数</div>
+                    <div class="input-group">
+                        <label>专项债券年利率（%，按收储年限）</label>
+                        <div class="rate-per-year">
+                            <input type="number" id="s3_bondRate_1" value="2.30" min="0" step="0.01" title="1年期">
+                            <span class="rate-label">1年</span>
+                            <input type="number" id="s3_bondRate_2" value="2.50" min="0" step="0.01" title="2年期">
+                            <span class="rate-label">2年</span>
+                            <input type="number" id="s3_bondRate_3" value="2.70" min="0" step="0.01" title="3年期">
+                            <span class="rate-label">3年</span>
+                            <input type="number" id="s3_bondRate_5" value="2.90" min="0" step="0.01" title="5年期">
+                            <span class="rate-label">5年</span>
+                            <input type="number" id="s3_bondRate_7" value="3.00" min="0" step="0.01" title="7年期">
+                            <span class="rate-label">7年</span>
+                        </div>
+                        <span class="input-hint">不同收储年限适用不同债券利率</span>
+                    </div>
+                    <div class="input-group">
+                        <label>技术支持成本费率（%，一次性）</label>
+                        <input type="number" id="s3_tech" value="0.80" min="0" step="0.01">
+                    </div>
+                    <button class="calc-btn" id="s3_calc">立即测算</button>
+                </div>
+
+                <!-- 右侧：测算结果 -->
+                <div class="calc-results">
+                    <!-- 一、不同收储年份测算结果（分项成本） -->
+                    <h3 class="calc-title"><span class="sub-icon">📋</span>不同收储年份测算结果</h3>
+                    <p class="subsection-desc" style="margin-bottom:12px;">按市场形势修正系数法测算1/2/3/5/7年不同收储年限的分项成本，公式依据《深圳市运用专项债券收回收购存量闲置土地价格确定规则》（深规划资源〔2026〕48号）；收地基础价格 = 当前时点剩余年期评估总价</p>
+                    <div class="table-wrap">
+                        <table class="data-table result-table" id="s3_costTable">
+                            <thead>
+                                <tr>
+                                    <th>收储年限</th>
+                                    <th>收地基础价格(万元)</th>
+                                    <th>预计土地出让收入(万元)</th>
+                                    <th>专项债券利息(万元)</th>
+                                    <th>债券发行手续费(万元)</th>
+                                    <th>发行登记服务费(万元)</th>
+                                    <th>还本付息兑付手续费(万元)</th>
+                                    <th>融资成本小计(万元)</th>
+                                    <th>日常管理费(万元)</th>
+                                    <th>契税(万元)</th>
+                                    <th>印花税(万元)</th>
+                                    <th>招拍挂费用(万元)</th>
+                                    <th>技术支持费(万元)</th>
+                                    <th>政府额外支出合计(万元)</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <!-- 二、融资平衡条件下收地价格 -->
+                    <h4 class="block-title" style="margin-top:24px;"><span class="sub-icon">⚖️</span>融资平衡条件下收地价格</h4>
+                    <p class="subsection-desc" style="margin-bottom:12px;">融资收益平衡条件下的收地价格 = 预计土地出让收入 − 预计政府额外支出成本；收地基础价格 = 当前时点剩余年期评估总价（联动板块二③）；最低下调幅度 =（1 − 融资平衡收地价格 ÷ 收地基础价格）× 100%</p>
+                    <div class="table-wrap">
+                        <table class="data-table result-table" id="s3_balanceTable">
+                            <thead>
+                                <tr>
+                                    <th>收储年限</th>
+                                    <th>预计土地出让收入(万元)</th>
+                                    <th>政府额外支出(万元)</th>
+                                    <th>融资平衡收地价(万元)</th>
+                                    <th>收地基础价格(万元)</th>
+                                    <th>最低下调幅度</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <!-- 三、建议下调幅度和建议收地价格 -->
+                    <h4 class="block-title" style="margin-top:24px;"><span class="sub-icon">💡</span>建议下调幅度和建议收地价格</h4>
+                    <p class="subsection-desc" style="margin-bottom:12px;">建议下调幅度 = 最低下调幅度向上取整至小数点后一位（最低0.5%）；建议收地价格 = 收地基础价格 ×（1 − 建议下调幅度）</p>
+                    <div class="chart-container chart-sm" style="margin-bottom:16px;">
+                        <canvas id="suggestChart"></canvas>
+                    </div>
+                    <div class="table-wrap">
+                        <table class="data-table result-table" id="s3_suggestTable">
+                            <thead>
+                                <tr>
+                                    <th>收储年限</th>
+                                    <th>最低下调幅度</th>
+                                    <th>建议下调幅度</th>
+                                    <th>收地基础价格(万元)</th>
+                                    <th>建议收地价格(万元)</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="result-summary" id="s3_summary"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ 板块五：融资平衡可实施性分析 ============ -->
+        <section id="section5" class="section section-alt">
+            <div class="section-header">
+                <span class="section-tag">板块五</span>
+                <h2 class="section-title">融资平衡可实施性分析</h2>
+                <p class="section-desc">按规划后用途预测不同收储年限土地出让收入，扣减资金成本及手续费、招拍挂服务费（收入千分之三）、刚性计提（净收益20%），测算本息覆盖倍数，覆盖倍数 ≥ 1.2 则项目可行</p>
+            </div>
+
+            <div class="calc-layout" id="coverage-calc">
+                <!-- 左侧：参数输入 -->
+                <div class="calc-inputs">
+                    <h3 class="calc-title"><span class="sub-icon">⚙️</span>融资平衡测算参数</h3>
+                    <div class="input-group">
+                        <label>规划后用途</label>
+                        <select id="s4_use">
+                            <option value="residential">住宅用地（规划后）</option>
+                            <option value="commercial" selected>商办用地（规划后）</option>
+                            <option value="industrial">工业用地（规划后）</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>最新版标定地价满年期评估总价（万元 · 意向新规划）</label>
+                        <input type="text" id="s4_price" readonly>
+                        <span class="input-hint">自动联动板块二④意向新规划满年期评估结果</span>
+                    </div>
+                    <div class="input-group">
+                        <label>意向规划后总建筑面积（㎡）</label>
+                        <input type="text" id="s4_buildAreaNew" readonly>
+                        <span class="input-hint">自动联动板块二意向新规划指标</span>
+                    </div>
+                    <div class="input-divider">债券与成本参数</div>
+                    <div class="input-group">
+                        <label>专项债券年利率（%，按收储年限）</label>
+                        <div class="rate-per-year">
+                            <input type="number" id="s4_bondRate_1" value="2.30" min="0" step="0.01">
+                            <span class="rate-label">1年</span>
+                            <input type="number" id="s4_bondRate_2" value="2.50" min="0" step="0.01">
+                            <span class="rate-label">2年</span>
+                            <input type="number" id="s4_bondRate_3" value="2.70" min="0" step="0.01">
+                            <span class="rate-label">3年</span>
+                            <input type="number" id="s4_bondRate_5" value="2.90" min="0" step="0.01">
+                            <span class="rate-label">5年</span>
+                            <input type="number" id="s4_bondRate_7" value="3.00" min="0" step="0.01">
+                            <span class="rate-label">7年</span>
+                        </div>
+                        <span class="input-hint">不同收储年限适用不同债券利率</span>
+                    </div>
+                    <div class="input-group">
+                        <label>刚性计提比例（%，按净收益）</label>
+                        <input type="number" id="s4_rigid" value="20" min="0" max="50" step="1">
+                        <span class="input-hint">净收益20%</span>
+                    </div>
+                    <button class="calc-btn" id="s4_calc">测算覆盖倍数</button>
+                </div>
+
+                <!-- 右侧：测算结果 -->
+                <div class="calc-results">
+                    <h3 class="calc-title"><span class="sub-icon">📋</span>不同收储年限覆盖倍数测算</h3>
+                    <div class="table-wrap">
+                        <table class="data-table result-table" id="s4_resultTable">
+                            <thead>
+                                <tr>
+                                    <th>收储年限</th>
+                                    <th>预测出让收入(万元)</th>
+                                    <th>招拍挂服务费(万元)</th>
+                                    <th>刚性计提(万元)</th>
+                                    <th>可用于还本付息(万元)</th>
+                                    <th>债券本金(万元)</th>
+                                    <th>资金成本及手续费(万元)</th>
+                                    <th>债券本息(万元)</th>
+                                    <th>本息覆盖倍数</th>
+                                    <th>可行性</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <!-- 市场形势修正系数法（1/2/3/5/7年） -->
+                    <h4 class="block-title" style="margin-top:24px;"><span class="sub-icon">📐</span>按市场形势修正系数测算（1/2/3/5/7年）</h4>
+                    <p class="subsection-desc" style="margin-bottom:12px;">预计出让收入 = 最新版标定地价满年期评估总价 × 市场形势修正系数 × 规划后用途价值系数，展示不同收储年限的预计收入、各项支出与本息覆盖倍数</p>
+                    <div class="table-wrap">
+                        <table class="data-table result-table" id="s4_coefTable">
+                            <thead>
+                                <tr>
+                                    <th>收储年限</th>
+                                    <th>预计出让收入(万元)</th>
+                                    <th>资金成本及手续费(万元)</th>
+                                    <th>招拍挂服务费(万元)</th>
+                                    <th>刚性计提(万元)</th>
+                                    <th>可用于还本付息(万元)</th>
+                                    <th>债券本息(万元)</th>
+                                    <th>本息覆盖倍数</th>
+                                    <th>可行性</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <!-- 覆盖倍数柱状图 -->
+                    <div class="chart-container chart-sm">
+                        <canvas id="coverageChart"></canvas>
+                    </div>
+                    <div class="result-summary" id="s4_summary"></div>
+                </div>
+            </div>
+
+            <!-- 敏感性分析 -->
+            <div class="subsection sensitivity-section" id="sensitivity-analysis">
+                <h3 class="subsection-title"><span class="sub-icon">🔬</span>敏感性分析</h3>
+                <p class="subsection-desc">基于板块五当前参数，对关键变量进行单变量敏感性测试：预计土地出让收入 ±10% 变动、专项债券利率 ±1% 变动，观察 5 年期本息覆盖倍数的响应。绿色表示仍 ≥ 1.2 可行，红色表示跌破阈值。</p>
+                <div class="table-wrap">
+                    <table class="data-table sensitivity-table" id="sensitivityTable">
+                        <thead>
+                            <tr>
+                                <th>敏感变量</th>
+                                <th>下浮（-10%收入 / -1%利率）</th>
+                                <th>基准覆盖倍数</th>
+                                <th>上浮（+10%收入 / +1%利率）</th>
+                                <th>敏感度</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="chart-container chart-sm">
+                    <canvas id="sensitivityChart"></canvas>
+                </div>
+                <div class="result-summary" id="sensitivitySummary"></div>
+            </div>
+        </section>
+
+        <!-- ============ 板块六：投资结论 ============ -->
+        <section id="section6" class="section">
+            <div class="section-header">
+                <span class="section-tag">板块六</span>
+                <h2 class="section-title">投资结论</h2>
+                <p class="section-desc">基于1/2/3/5/7年不同收储年限的收入、分项成本与本息覆盖倍数测算，确定适合的收储年限与收地价格，判断项目融资自平衡可行性</p>
+            </div>
+
+            <!-- 一、不同收储年限收入与分项成本对比表 -->
+            <div class="subsection">
+                <h3 class="subsection-title"><span class="sub-icon">📋</span>不同收储年限收入与分项成本对比</h3>
+                <p class="subsection-desc">汇总不同收储年限（1/2/3/5/7年）的预计土地出让收入、各项成本、融资平衡收地价格与本息覆盖倍数；本息覆盖倍数 ≥ 1.2 即判定该年限下项目可行</p>
+                <div class="table-wrap">
+                    <table class="data-table result-table" id="conclusionTable">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">收储年限</th>
+                                <th colspan="4">收入与分项成本（万元）</th>
+                                <th colspan="2">收地价格（万元）</th>
+                                <th rowspan="2">债券本息(万元)</th>
+                                <th rowspan="2">本息覆盖倍数</th>
+                                <th rowspan="2">可行性</th>
+                            </tr>
+                            <tr>
+                                <th>预计土地出让收入</th>
+                                <th>专项债券利息</th>
+                                <th>招拍挂成本</th>
+                                <th>日常管理费+税费</th>
+                                <th>融资平衡收地价</th>
+                                <th>建议收地价格</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 二、收储年限与收地价格建议 -->
+            <div class="conclusion-layout">
+                <div class="conclusion-card">
+                    <h3 class="conclusion-title"><span class="sub-icon">📅</span>收储年限建议</h3>
+                    <div id="conclusion_years" class="conclusion-body"></div>
+                </div>
+
+                <div class="conclusion-card">
+                    <h3 class="conclusion-title"><span class="sub-icon">💰</span>收地价格建议</h3>
+                    <div id="conclusion_costs" class="conclusion-body"></div>
+                </div>
+
+                <div class="conclusion-card conclusion-verdict">
+                    <h3 class="conclusion-title"><span class="sub-icon">✅</span>投资可行性结论</h3>
+                    <div id="conclusion_verdict" class="conclusion-body"></div>
+                </div>
+            </div>
+
+            <!-- 综合建议 -->
+            <div class="recommendation-box" id="recommendationBox">
+                <h3 class="recommendation-title">📌 综合建议</h3>
+                <div id="recommendationContent" class="recommendation-content"></div>
+            </div>
+        </section>
+
+        <!-- ============ 板块七：全链条价格测算结果报告 ============ -->
+        <section id="section7" class="section section-alt">
+            <div class="section-header">
+                <span class="section-tag">板块七</span>
+                <h2 class="section-title">运用专项债券实施土地收储全链条价格测算结果报告</h2>
+                <p class="section-desc">汇总土地市场价格评估、建议下调幅度与收地价格测算、可实施性分析与投资建议的全链条测算结果</p>
+                <div class="report-actions" style="margin-top:12px;">
+                    <button class="calc-btn" id="reportExportBtn" type="button">📄 导出PDF报告</button>
+                    <button class="calc-btn" id="reportPrintBtn" type="button" style="background:var(--gradient-2);">🖨️ 浏览器打印</button>
+                    <button class="calc-btn" id="reportRefreshBtn" type="button">🔄 刷新报告数据</button>
+                </div>
+            </div>
+
+            <div class="report-container" id="reportContainer">
+                <!-- 一、项目介绍 -->
+                <div class="subsection report-section" id="report-intro">
+                    <h3 class="subsection-title"><span class="sub-icon">①</span>项目介绍</h3>
+                    <div id="reportIntroContent" class="report-body"></div>
+                </div>
+
+                <!-- 二、土地市场价格评估 -->
+                <div class="subsection report-section" id="report-eval">
+                    <h3 class="subsection-title"><span class="sub-icon">②</span>土地市场价格评估</h3>
+                    <div id="reportEvalContent" class="report-body"></div>
+                </div>
+
+                <!-- 三、建议下调幅度和收地价格测算 -->
+                <div class="subsection report-section" id="report-price">
+                    <h3 class="subsection-title"><span class="sub-icon">③</span>建议下调幅度和收地价格测算</h3>
+                    <p class="subsection-desc">测算公式：融资平衡收地价 = 预计土地出让收入 − 政府额外支出；最低下调幅度 = (1 − 融资平衡收地价 ÷ 收地基础价格) × 100%；建议收地价格 = 收地基础价格 × (1 − 建议下调幅度)</p>
+                    <div id="reportPriceContent" class="report-body"></div>
+                </div>
+
+                <!-- 四、可实施性分析 -->
+                <div class="subsection report-section" id="report-feasibility">
+                    <h3 class="subsection-title"><span class="sub-icon">④</span>可实施性分析</h3>
+                    <p class="subsection-desc">测算公式：本息覆盖倍数 = (预计出让收入 − 资金成本 − 招拍挂成本 − 日常管理费 − 刚性计提) ÷ 债券本息；阈值 ≥ 1.2 即判定可行</p>
+                    <div id="reportFeasibilityContent" class="report-body"></div>
+                </div>
+
+                <!-- 五、投资建议 -->
+                <div class="subsection report-section" id="report-investment">
+                    <h3 class="subsection-title"><span class="sub-icon">⑤</span>投资建议</h3>
+                    <div id="reportInvestmentContent" class="report-body"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+    </div><!-- /.layout-wrapper -->
+
+    <!-- 政策原文查看模态框 -->
+    <div class="modal-overlay" id="policyModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 class="modal-title" id="policyModalTitle">政策原文</h3>
+                <div class="modal-actions">
+                    <button class="modal-nav-btn" id="policyPrevPage" type="button" aria-label="上一页">‹</button>
+                    <span class="modal-page-info" id="policyPageInfo">0 / 0</span>
+                    <button class="modal-nav-btn" id="policyNextPage" type="button" aria-label="下一页">›</button>
+                    <button class="modal-close" id="policyClose" type="button" aria-label="关闭">×</button>
+                </div>
+            </div>
+            <div class="modal-body" id="policyModalBody">
+                <div class="modal-loading">加载中…</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>运用专项债券实施土地收储全链条价值测算平台</p>
+            <p class="footer-note">预测数据基于 AR / ARIMA / SARIMA / ECM 模型（数据源：monthly.xlsx） | 测算结果仅供参考，具体执行以最新政策与评估为准</p>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
